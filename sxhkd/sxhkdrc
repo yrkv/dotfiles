@@ -1,0 +1,182 @@
+﻿##################################################
+# Bpswm and sxhkd controls
+# ------------------------
+
+# quit bspwm/logout
+super + shift + q
+	kill -9 -1
+
+# make sxhkd reload its configuration files:
+super + shift + Escape
+	pkill -USR1 -x sxhkd
+
+##################################################
+# Window manipulation
+# -------------------
+
+# Close window
+super + x
+	bspc  node -c
+
+# Kill window
+super + shift + x
+	bspc  node -k
+	
+# Toggle fullscreen
+super + shift + f 
+	bspc node -t {fullscreen,tiled}	
+
+##################################################
+# Window moving and splitting
+# ---------------------------
+
+# Presel window for splitting in certain direction
+alt + ctrl + {a,s,w,d}
+	bspc node -p \~{west,south,north,east} -i
+
+alt + ctrl + {h,j,k,l}
+	bspc node -p \~{west,south,north,east}
+
+alt + ctrl + {Left,Down,Up,Right}
+	bspc node -p \~{west,south,north,east}
+
+# Set splitting ratio of windows
+alt + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+		
+# Move current window to largest space or preselected area if there is one.
+super + Return
+    windowpromoter
+
+# Create a new "master area", splitting the whole desktop instead of just windows.
+alt + Return
+	bspc node -n @/
+	
+# go (Shift=move) to desktop (and focus the monitor that the desktop is located on. Bspwm style)
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,node -d} ^{1-9,10}
+
+# cycle windows
+alt + {_,shift + }Tab
+    bspc node -f {next,prev}
+
+# cycle desktop
+super + {_,shift + }Tab
+    bspc desktop -f {next,prev}
+	
+# Focus windows by direction, works with multihead
+super +  {a,s,w,d}
+    focusmover {west,south,north,east}
+
+super +  {h,j,k,l}
+    focusmover {west,south,north,east}
+
+super +  {Left,Down,Up,Right}
+    focusmover {west,south,north,east}
+        	
+# Move tiled windows. Moving a tiled window to 
+# preselected one moves into preselection instead. 
+# Moving out of the screen should move the window to next monitor if possible
+super + shift + {a,s,w,d}
+	windowgrabber {west,south,north,east}
+
+super + shift + {h,j,k,l}
+	windowgrabber {west,south,north,east}
+	
+super + shift + {Left,Down,Up,Right}
+	windowgrabber {west,south,north,east}
+
+# resize windows
+super + ctrl + {a,s,w,d}
+	bspwm_resize.sh {west,south,north,east}
+
+super + ctrl + {h,j,k,l}
+	bspwm_resize.sh {west,south,north,east}
+	
+super + ctrl + {Left,Down,Up,Right}
+	bspwm_resize.sh {west,south,north,east}
+
+##################################################
+# Layout manipulation/desktop level controls
+# ------------------------------------------
+
+# Toggle monocle mode
+super + f 
+	bspc desktop -l next
+	
+# Balance tree (equalize windows)
+super + b
+	bspc node @/ -E
+	
+# Balance tree (equalize windows)
+super + ctrl + b
+	bspc node @/ -E
+
+# Mirror and flip leaves of tree
+super + {comma,period}
+	bspc node @/ -F {horizontal,vertical}
+	
+# Rotate leaves of tree
+super + shift + {comma,period}
+	bspc node @/ -R {90,270}
+
+# Toggle window gap
+super + g
+    bspc config window_gap {0,$gap} ;  bspc node @ --focus
+
+##################################################
+# Spawn Programs
+# --------------
+
+# run applications
+super + space
+    rofi -show run
+# TODO: configure rofi
+	#dmenu_recent -fn 'xos4 Terminus:size=15' -i -l 14 -w 600 -y $PANEL_HEIGHT
+
+super + z
+	st tmux
+
+super + shift + z
+	open-terminal-here
+
+super + shift + b
+	chromium
+    		
+super + e
+	st ranger
+
+Print
+	 scrot ~/Pictures/'%Y-%m-%d-%s_$wx$h_scrot.png'
+	
+#
+# Media keys
+#
+
+XF86AudioRaiseVolume
+	volume up
+
+XF86AudioLowerVolume
+	volume down
+
+XF86AudioMute
+	amixer -D pulse sset Master toggle
+	
+XF86MonBrightnessDown
+ light -U 5 
+
+XF86MonBrightnessUp
+ light -A 5
+ 
+
+XF86Sleep
+	systemctl suspend
+
+
+# Toggle Redshift on/off
+super + ctrl + space
+    pkill -USR1 redshift
+
+# Remove receptacles
+super + BackSpace
+  for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
