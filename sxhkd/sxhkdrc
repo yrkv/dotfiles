@@ -26,6 +26,17 @@ super + shift + x
 super + shift + f 
 	bspc node -t {fullscreen,tiled}	
 
+# hide window
+super + c
+    bspc node --flag hidden
+
+# show hidden windows
+super + shift + c
+    bspc node any.hidden --flag marked; \
+    bspc node any.hidden --flag hidden; \
+    bspc node last.marked --focus; \
+    bspc node any.marked --flag marked;
+
 ##################################################
 # Window moving and splitting
 # ---------------------------
@@ -49,16 +60,16 @@ super + Return
     windowpromoter
 
 # Create a new "master area", splitting the whole desktop instead of just windows.
-alt + Return
-	bspc node -n @/
+#alt + Return
+	#bspc node -n @/
 	
 # go (Shift=move) to desktop (and focus the monitor that the desktop is located on. Bspwm style)
 super + {_,shift + }{1-9,0}
     bspc {desktop -f,node -d} ^{1-9,10}
 
-# cycle windows
-alt + {_,shift + }Tab
-    bspc node -f {next,prev}
+# alternate windows
+alt + Tab
+    bspc node -f last
 
 # cycle desktop
 super + {_,shift + }Tab
@@ -124,6 +135,10 @@ super + shift + {comma,period}
 super + g
     bspc config window_gap {0,$gap} ;  bspc node @ --focus
 
+# Remove receptacles
+super + BackSpace
+  for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
+
 ##################################################
 # Spawn Programs
 # --------------
@@ -135,7 +150,7 @@ super + space
 	#dmenu_recent -fn 'xos4 Terminus:size=15' -i -l 14 -w 600 -y $PANEL_HEIGHT
 
 super + z
-	st tmux
+	st -e elvish
 
 super + shift + z
 	open-terminal-here
@@ -154,13 +169,13 @@ Print
 #
 
 XF86AudioRaiseVolume
-	volume up
+	amixer set Master 2%+
 
 XF86AudioLowerVolume
-	volume down
+	amixer set Master 2%-
 
 XF86AudioMute
-	amixer -D pulse sset Master toggle
+	amixer set Master toggle
 	
 XF86MonBrightnessDown
  light -U 5 
@@ -172,11 +187,18 @@ XF86MonBrightnessUp
 XF86Sleep
 	systemctl suspend
 
+#
+# General Keybinds
+# 
 
 # Toggle Redshift on/off
 super + ctrl + space
     pkill -USR1 redshift
 
-# Remove receptacles
-super + BackSpace
-  for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
+# Caps_Lock = both shift keys
+shift + Shift_R
+    xdotool key Caps_Lock
+
+shift + Shift_L
+    xdotool key Caps_Lock
+

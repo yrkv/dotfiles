@@ -1,16 +1,16 @@
 #! /bin/sh
 
-# gap defined in configuration.nix
-# top padding enforced by panel
-export PANEL_HEIGHT=0 # 25
-
 query() {
-    xrdb -query -all | awk -F "[ \t]+" "/$1:/"'{print $2}'
+  xrdb -query -all | awk -F '[ \t]+' "/$1:/"'{print $2}' | head -n 1
 }
 
 ##################################################
 # Settings
 # --------
+
+# Restore previous wal colorscheme
+wal -R
+xrdb -override .Xresources
 
 # Window Gap/Padding Settings
 bspc config window_gap $gap
@@ -26,9 +26,11 @@ bspc config single_monocle true
 bspc config paddingless_monocle false
 
 # Color Settings
-bspc config focused_border_color "$(query bspwm.border.focused)"
-bspc config normal_border_color "$(query bspwm.border.normal)"
-bspc config presel_feedback_color "$(query bspwm.presel.color)"
+#bspc config focused_border_color "$(query bspwm.border.focused)"
+#bspc config normal_border_color "$(query bspwm.border.normal)"
+bspc config focused_border_color "$(query color6)"
+bspc config normal_border_color "$(query color0)"
+bspc config presel_feedback_color "$(query color3)"
 bspc config border_width 2
 
 # Behavior Settings
@@ -37,6 +39,9 @@ bspc config pointer_follows_focus true
 
 # Settings for Manual Splitting
 bspc config split_ratio         0.50
+
+# bspwm rules
+bspc rule -a ".zathura-wrapped_" state="tiled"
 
 # Create and Name 10 Desktops
 bspc monitor -d I II III IV V VI VII VIII IX X
@@ -52,6 +57,9 @@ bspc monitor -d I II III IV V VI VII VIII IX X
 # Reset layout back to tiled after all windows have been closed on a desktop
 #resetMonocleOnCloseAll &
 
+# needed for elvish history for some reason
+rm -r /tmp/elvish-1000/
+
 # Pseudo automatic mode: always splits focused window when opening new window
 bspc config external_rules_command ~/.config/bspwm/pseudo_automatic_mode
 
@@ -60,6 +68,9 @@ bspc config external_rules_command ~/.config/bspwm/pseudo_automatic_mode
 
 # launch top bar
 polybar -r -c ~/.config/polybar top &
+
+# set cursor to normal mouse
+xsetroot -cursor_name left_ptr
 
 # set desktop background
 sh ~/.fehbg &
