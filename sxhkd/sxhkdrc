@@ -153,7 +153,7 @@ super + z
 	st -e elvish
 
 super + shift + z
-	open-terminal-here
+	open-terminal-here "st elvish"
 
 super + shift + b
 	chromium
