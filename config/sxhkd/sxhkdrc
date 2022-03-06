@@ -1,0 +1,199 @@
+#
+# For the most part, controls follow the following patterns:
+#   super -- base button to do wm related things
+#   alt -- alters/controls things
+#   shift -- stronger effect
+#   ctrl -- reversed effect
+#
+###########################
+# bspwm and sxhkd controls
+# ------------------------
+
+# quit/restart bspwm
+super + alt + {q,r}
+    bspc {quit,wm -r}
+
+# reload sxhkd configuration
+super + alt + s
+    pkill -USR1 -x sxhkd
+
+
+######################
+# window manipulation
+# -------------------
+
+# close and kill
+super + {_,shift + }x
+    bspc node -{c,k}
+
+# hide window
+super + c
+    bspc node --flag hidden
+
+# unhide all hidden windows
+super + ctrl + c
+    bspc node any.hidden --flag marked; \
+    bspc node any.hidden --flag hidden; \
+    bspc node biggest.marked --focus; \
+    bspc node any.marked --flag marked;
+
+# toggle fullscreen (disables monocle)
+super + shift + m
+	bspc desktop -l tiled; \
+    bspc node --state ~fullscreen
+
+# focus/swap the node in the given direction
+super + {_,shift + }{h,j,k,l}
+    bspc node -{f,s} {west,south,north,east}
+super + {_,shift + }{a,s,w,d}
+    bspc node -{f,s} {west,south,north,east}
+
+# expand a window by moving one of its side outward
+super + ctrl + {h,j,k,l}
+    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+super + ctrl + {a,s,w,d}
+    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + ctrl + shift + {h,j,k,l}
+    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+super + ctrl + shift + {a,s,w,d}
+    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# preselect direction
+ctrl + alt + {h,j,k,l}
+    bspc node -p \~{west,south,north,east}
+
+# preselect ratio
+ctrl + alt + {1-9}
+	bspc node -o 0.{1-9}
+
+# Move current window to preselect if there is one, else swap with biggest window
+super + Return
+    bspc node -n 'newest.!automatic.local' || bspc node -s 'biggest.local.!focused'
+
+
+######################
+# tabbed manipulation
+# -------------------
+# super + t             base chord for all tabbed manipulation
+#   t                   (create) create new tabbed container on focused window
+#   r                   (detach) remove focused window from tabbed container
+#   shift + r           (explode) remove all windows from tabbed container
+#   {h,j,k,l}           (attach) move focused window into target tabbed container
+#   shift + {h,j,k,l}   (merge) merge focused tabbed/window with target tabbed/window
+super + t; t
+    tabc-simple create $(bspc query -N -n focused)
+super + t; r
+    tabc-simple detach $(bspc query -N -n focused)
+super + t; shift + r
+    tabc-simple explode $(bspc query -N -n focused)
+super + t; {h,j,k,l}
+    tabc-simple attach $(bspc query -N -n focused) $(bspc query -N -n {west,south,north,east})
+super + t; shift + {h,j,k,l}
+    tabc-simple merge $(bspc query -N -n focused) $(bspc query -N -n {west,south,north,east})
+
+
+
+######################
+# layout/desktop manipulation
+# -------------------
+
+# alternate between the tiled and monocle layout (disables fullscreen)
+super + m
+    bspc node any.fullscreen --state tiled; \
+	bspc desktop -l next
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f, node -d} '^{1-9,10}'
+
+# equalize windows
+super + e
+    bspc node @/ -E
+
+# mirror/flip leaves of tree
+super + {comma, period}
+    bspc node @/ -F {horizontal,vertical}
+
+# rotate leaves of tree
+super + shift + {comma, period}
+    bspc node @/ -R {90, 270}
+
+
+#################
+# media controls
+# --------------
+
+{XF86MonBrightnessDown, XF86MonBrightnessUp}
+    brillo {-U 5, -A 5}; \
+    dunstify -h int:value:$(brillo) -r 123 "Brightness [$(brillo)%]"
+
+{XF86AudioPlay, XF86AudioPause}
+    playerctl play-pause
+
+{XF86AudioLowerVolume, XF86AudioRaiseVolume
+    pactl set-sink-volume @DEFAULT_SINK@ {-2%, +2%}; \
+    dunstify -h int:value:$(pamixer --get-volume) -r 456 "Volume [$(pamixer --get-volume-human)]"
+
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle; \
+    dunstify -h int:value:$(pamixer --get-volume) -r 456 "Volume [$(pamixer --get-volume-human)]"
+
+
+#####################
+# programs/utilities
+# ------------------
+
+# terminal emulator
+#   `super + z`       : base keybind
+#   include shift     : open in same directory as focused terminal
+#   `super + t` chord : embed, super becomes optional
+{super + shift,super} + z
+    {pid="$(xdotool getwindowfocus getwindowpid)"; \
+    ppid="$(ps -o pid= --ppid "$pid" | xargs)"; \
+    alacritty --working-directory "$(readlink "/proc/$ppid/cwd")", alacritty}
+super + t; {super +, }{shift, } + z
+    { , } \
+    tabc-simple create $(bspc query -N -n focused); \
+    tabbed-sub-once $(bspc query -N -n focused) & \
+    {pid="$(xdotool getwindowfocus getwindowpid)"; \
+    ppid="$(ps -o pid= --ppid "$pid" | xargs)"; \
+    alacritty --working-directory "$(readlink "/proc/$ppid/cwd")", alacritty, alacritty}
+
+# TODO: scratchpad
+#super + grave
+
+# application launcher
+#   `super + space`   : base keybind
+#   `super + t` chord : embed, super becomes optional
+super + space
+    rofi -show drun
+super + t; {super + , } space
+    tabc-simple create $(bspc query -N -n focused); \
+    tabbed-sub-once "$(bspc query -N -n focused)" & \
+    rofi -show drun
+
+# search/focus open windows
+super + Tab
+    rofi -show window
+
+# search/focus browser tabs
+# TODO: fix. it's kinda buggy.
+super + shift + Tab
+    QUERY_OUT="$(brotab list | rofi -i -dmenu | awk '\{for (i=1; i<=NF; i++) printf $i " "; \}')"; \
+    TAB_ID="$(echo $QUERY_OUT | awk '\{ printf $1 " " \}')"; \
+    TAB_NAME="$(echo $QUERY_OUT | awk '\{for (i=2; i<NF; i++) printf $i " "; \}')"; \
+    brotab activate $TAB_ID; \
+    bspc node "$(xdotool search --limit 1 --name "$TAB_NAME")" --focus; \
+    sleep 0.05; \
+    bspc node "$(xdotool search --limit 1 --name "$TAB_NAME")" --focus
+
+# screenshot utility:
+{shift + , }Print
+    export MOD_SHIFT={true,false}; \
+    screenshot_util.sh
+
+# both shift keys for caps lock toggle
+shift + {Shift_L, Shift_R}
+    xdotool key Caps_Lock

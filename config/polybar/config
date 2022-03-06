@@ -1,0 +1,104 @@
+; vim: ft=dosini
+
+[bar/top]
+width = 100%
+height = 20
+wm-restack = bspwm
+
+modules-left = bspwm network
+modules-center = xwindow
+modules-right = temperature pulseaudio battery date
+
+module-margin = 1
+line-size = 2
+
+
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused-foreground = #08f
+; label-focused-overline = #fff
+label-focused-underline = #fff
+
+label-occupied-foreground = #aaa
+
+label-empty-foreground = #444
+
+format = <label-state>
+
+label-focused = %name%
+label-urgent = %name%
+label-occupied = %name%
+label-empty = %name%
+
+label-separator = " "
+label-separator-padding = 0
+label-separator-foreground = #ffb52a
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:100:...%
+
+
+[module/temperature]
+type = internal/temperature
+format = <label>
+thermal-zone = 10
+
+base-temperature = 0
+warn-temperature = 80
+
+;label = %temperature-c%
+;label-warn = %temperature-c%
+
+label-foreground = #ff8
+label-warn-foreground = #fa0
+
+[module/battery]
+type = internal/battery
+full-at = 100
+;low-at = 20 ; TODO: use once polybar version >= 3.6.0
+battery = BAT0
+;adapter = AC ; is it this or the other one?
+time-format = %H:%M
+
+label-charging = %percentage%% %time%
+label-charging-foreground = #ff8
+
+label-discharging = %percentage%% %time%
+label-discharging-foreground = #fa0
+
+label-full = %percentage%%
+label-full-foreground = #8f8
+
+;label-low = %percentage%% %time
+;label-low-foreground = #f55
+
+
+[module/date]
+type = internal/date
+date = "%Y-%m-%d "
+date-alt = 
+time = %H:%M:%S
+time-alt = %H:%M:%S
+label =%date%%time%
+label-foreground = #82B414
+
+[module/network]
+type = internal/network
+interface = wlp59s0
+
+label-connected = %essid%
+label-connected-foreground = #AE81FF
+
+label-disconnected = %ifname%
+label-disconnected-foreground = #534582
+
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+label-volume-foreground = #AE81FF
+label-muted-foreground = #534582
+

@@ -1,0 +1,12 @@
+[helpers]
+
+[default]
+depends = []
+
+[default.files]
+"config/bspwm/bspwmrc" = "~/.config/bspwm/bspwmrc"
+"config/sxhkd/sxhkdrc" = "~/.config/sxhkd/sxhkdrc"
+"config/polybar/config" = "~/.config/polybar/config"
+"config/fd/ignore" = "~/.config/fd/ignore"
+
+[default.variables]
