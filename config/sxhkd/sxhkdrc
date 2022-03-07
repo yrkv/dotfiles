@@ -79,19 +79,22 @@ super + Return
 # super + t             base chord for all tabbed manipulation
 #   t                   (create) create new tabbed container on focused window
 #   r                   (detach) remove focused window from tabbed container
+#   e                   (embed) attach next opened window to focused window
 #   shift + r           (explode) remove all windows from tabbed container
 #   {h,j,k,l}           (attach) move focused window into target tabbed container
 #   shift + {h,j,k,l}   (merge) merge focused tabbed/window with target tabbed/window
 super + t; t
-    tabc-simple create $(bspc query -N -n focused)
+    tabc-simple -n create focused
 super + t; r
-    tabc-simple detach $(bspc query -N -n focused)
+    tabc-simple -n detach focused
+super + t; e
+    tabc-simple -n embed focused
 super + t; shift + r
-    tabc-simple explode $(bspc query -N -n focused)
+    tabc-simple -n explode focused
 super + t; {h,j,k,l}
-    tabc-simple attach $(bspc query -N -n focused) $(bspc query -N -n {west,south,north,east})
+    tabc-simple -n attach focused {west,south,north,east}
 super + t; shift + {h,j,k,l}
-    tabc-simple merge $(bspc query -N -n focused) $(bspc query -N -n {west,south,north,east})
+    tabc-simple -n merge focused {west,south,north,east}
 
 
 
@@ -150,16 +153,11 @@ XF86AudioMute
 #   include shift     : open in same directory as focused terminal
 #   `super + t` chord : embed, super becomes optional
 {super + shift,super} + z
-    {pid="$(xdotool getwindowfocus getwindowpid)"; \
-    ppid="$(ps -o pid= --ppid "$pid" | xargs)"; \
-    alacritty --working-directory "$(readlink "/proc/$ppid/cwd")", alacritty}
+    {open_terminal_here.sh, alacritty}
 super + t; {super +, }{shift, } + z
     { , } \
-    tabc-simple create $(bspc query -N -n focused); \
-    tabbed-sub-once $(bspc query -N -n focused) & \
-    {pid="$(xdotool getwindowfocus getwindowpid)"; \
-    ppid="$(ps -o pid= --ppid "$pid" | xargs)"; \
-    alacritty --working-directory "$(readlink "/proc/$ppid/cwd")", alacritty, alacritty}
+    tabc-simple -n embed focused \
+    {open_terminal_here.sh, alacritty, alacritty}
 
 # TODO: scratchpad
 #super + grave
@@ -170,24 +168,11 @@ super + t; {super +, }{shift, } + z
 super + space
     rofi -show drun
 super + t; {super + , } space
-    tabc-simple create $(bspc query -N -n focused); \
-    tabbed-sub-once "$(bspc query -N -n focused)" & \
-    rofi -show drun
+    tabc-simple -n embed focused rofi -show drun
 
 # search/focus open windows
 super + Tab
     rofi -show window
-
-# search/focus browser tabs
-# TODO: fix. it's kinda buggy.
-super + shift + Tab
-    QUERY_OUT="$(brotab list | rofi -i -dmenu | awk '\{for (i=1; i<=NF; i++) printf $i " "; \}')"; \
-    TAB_ID="$(echo $QUERY_OUT | awk '\{ printf $1 " " \}')"; \
-    TAB_NAME="$(echo $QUERY_OUT | awk '\{for (i=2; i<NF; i++) printf $i " "; \}')"; \
-    brotab activate $TAB_ID; \
-    bspc node "$(xdotool search --limit 1 --name "$TAB_NAME")" --focus; \
-    sleep 0.05; \
-    bspc node "$(xdotool search --limit 1 --name "$TAB_NAME")" --focus
 
 # screenshot utility:
 {shift + , }Print

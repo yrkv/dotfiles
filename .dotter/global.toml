@@ -9,4 +9,7 @@ depends = []
 "config/polybar/config" = "~/.config/polybar/config"
 "config/fd/ignore" = "~/.config/fd/ignore"
 
+"bin/screenshot_util.sh" = "~/.local/bin/screenshot_util.sh"
+"bin/open_terminal_here.sh" = "~/.local/bin/open_terminal_here.sh"
+
 [default.variables]
