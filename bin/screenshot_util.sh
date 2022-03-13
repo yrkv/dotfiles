@@ -9,12 +9,11 @@
 
 FILE="/tmp/screenshot$(date +"%s").png"
 
-echo $MOD_SHIFT
 if [[ $MOD_SHIFT = true ]]; then
     SCREENSHOT_COMMAND="shotgun -"
 else
     # Select window/rectangle
-    eval $(hacksaw -s9999 -g3 -f"WINDOW=%i; X=%x; Y=%y; W=%w; H=%h")
+    eval $(hacksaw -s9999 -g3 -f"WINDOW=%i; X=%x; Y=%y; W=%w; H=%h" || echo "exit 0")
 
     # adjust selection geometry to exclude window border
     ROOTID="$(( $(awk '/Window id:/{print $4}' <(xwininfo -root)) ))"
@@ -27,13 +26,13 @@ fi
 # capture screenshot, save to file, copy to clipboard
 $SCREENSHOT_COMMAND | tee $FILE | xclip -t 'image/png' -selection clipboard
 
-ACTION=$(dunstify \
+ACTION="$(dunstify \
     -I $FILE \
     -A "default,View screenshot" \
     -A "save,Save to ~/Pictures" \
     -A "xclip,Copy path to clipboard" \
     -A "why,Why" \
-    "Captured Screenshot")
+    "Captured Screenshot")"
 
 case "$ACTION" in
     "default")

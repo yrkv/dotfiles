@@ -32,3 +32,4 @@ sh $HOME/.fehbg &
 polybar -r top &
 libinput-gestures -v > /tmp/libinput-gestures-log.txt & #TODO: sometimes crashes
 
+#redshift -l 48:-122 &

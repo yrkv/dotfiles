@@ -11,5 +11,7 @@ depends = []
 
 "bin/screenshot_util.sh" = "~/.local/bin/screenshot_util.sh"
 "bin/open_terminal_here.sh" = "~/.local/bin/open_terminal_here.sh"
+"bin/bspwm_command_palette.sh" = "~/.local/bin/bspwm_command_palette.sh"
+"bin/fit_aspect.sh" = "~/.local/bin/fit_aspect.sh"
 
 [default.variables]

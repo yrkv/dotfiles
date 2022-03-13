@@ -30,12 +30,12 @@ super + {_,shift + }x
 super + c
     bspc node --flag hidden
 
-# unhide all hidden windows
+# unhide all hidden windows, focus one of them
 super + ctrl + c
     bspc node any.hidden --flag marked; \
-    bspc node any.hidden --flag hidden; \
+    while bspc node any.hidden --flag hidden; do :; done; \
     bspc node biggest.marked --focus; \
-    bspc node any.marked --flag marked;
+    bspc node any.marked --flag marked
 
 # toggle fullscreen (disables monocle)
 super + shift + m
@@ -154,25 +154,31 @@ XF86AudioMute
 #   `super + t` chord : embed, super becomes optional
 {super + shift,super} + z
     {open_terminal_here.sh, alacritty}
-super + t; {super +, }{shift, } + z
+super + t; {super +, }{shift +, } z
     { , } \
     tabc-simple -n embed focused \
     {open_terminal_here.sh, alacritty, alacritty}
 
 # TODO: scratchpad
-#super + grave
+super + grave
+    notify-send TODO: scratchpad
 
 # application launcher
 #   `super + space`   : base keybind
 #   `super + t` chord : embed, super becomes optional
-super + space
-    rofi -show drun
-super + t; {super + , } space
-    tabc-simple -n embed focused rofi -show drun
+super + {shift, } + space
+    rofi -show {run, drun}
+super + t; {super + , }{shift+, } space
+    { , } \
+    tabc-simple -n embed focused rofi -show {run, drun}
 
 # search/focus open windows
 super + Tab
     rofi -show window
+
+# searchable bspwm command palette
+super + shift + Return
+    bspwm_command_palette.sh
 
 # screenshot utility:
 {shift + , }Print
