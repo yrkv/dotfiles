@@ -7,12 +7,15 @@ depends = []
 "config/bspwm/bspwmrc" = "~/.config/bspwm/bspwmrc"
 "config/sxhkd/sxhkdrc" = "~/.config/sxhkd/sxhkdrc"
 "config/polybar/config.ini" = "~/.config/polybar/config.ini"
+
+"config/rofi/config.rasi" = "~/.config/rofi/config.rasi"
+"config/dunstrc" = "~/.config/dunst/dunstrc"
+"config/libinput-gestures.conf" = "~/.config/libinput-gestures.conf"
+"config/picom.conf" = "~/.config/picom.conf"
+
 "config/fd/ignore" = "~/.config/fd/ignore"
 "config/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
-"config/rofi/config.rasi" = "~/.config/rofi/config.rasi"
-"config/libinput-gestures.conf" = "~/.config/libinput-gestures.conf"
-"config/dunstrc" = "~/.config/dunst/dunstrc"
-"config/picom.conf" = "~/.config/picom.conf"
+"config/init.vim" = "~/.config/nvim/init.vim"
 
 "bin/screenshot_util.sh" = "~/.local/bin/screenshot_util.sh"
 "bin/open_terminal_here.sh" = "~/.local/bin/open_terminal_here.sh"
