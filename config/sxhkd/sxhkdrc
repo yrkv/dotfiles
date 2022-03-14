@@ -39,7 +39,7 @@ super + ctrl + c
 
 # toggle fullscreen (disables monocle)
 super + shift + m
-	bspc desktop -l tiled; \
+    bspc desktop -l tiled; \
     bspc node --state ~fullscreen
 
 # focus/swap the node in the given direction
@@ -66,7 +66,7 @@ ctrl + alt + {h,j,k,l}
 
 # preselect ratio
 ctrl + alt + {1-9}
-	bspc node -o 0.{1-9}
+    bspc node -o 0.{1-9}
 
 # Move current window to preselect if there is one, else swap with biggest window
 super + Return
@@ -105,7 +105,7 @@ super + t; shift + {h,j,k,l}
 # alternate between the tiled and monocle layout (disables fullscreen)
 super + m
     bspc node any.fullscreen --state tiled; \
-	bspc desktop -l next
+    bspc desktop -l next
 
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}

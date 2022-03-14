@@ -12,7 +12,7 @@ modules-right = temperature pulseaudio battery date
 module-margin = 1
 line-size = 2
 
-font-0 = "Terminus:style=Regular:pixelsize=12;2"
+font-0 = "Terminus:style=Regular:pixelsize=10;2"
 
 
 [module/bspwm]
@@ -103,7 +103,8 @@ label-foreground = #82B414
 
 [module/network]
 type = internal/network
-interface = wlp59s0
+; interface = wlp59s0
+interface = wlan0
 
 label-connected = %essid%
 label-connected-foreground = #AE81FF

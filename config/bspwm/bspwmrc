@@ -26,10 +26,15 @@ bspc rule -a Zathura state='tiled'
 export _JAVA_AWT_WM_NONREPARENTING=1
 bspc rule -a sun-awt-X11-XDialogPeer state=floating
 
-
 SXHKD_SHELL=/bin/sh sxhkd &
-sh $HOME/.fehbg &
-polybar -r top &
+
+sh $HOME/.fehbg
+setxkbmap -option caps:escape
+
+pgrep polybar > /dev/null || polybar -r top &
 libinput-gestures -v > /tmp/libinput-gestures-log.txt & #TODO: sometimes crashes
+pgrep xbanish > /dev/null || xbanish &
+picom &
 
 #redshift -l 48:-122 &
+

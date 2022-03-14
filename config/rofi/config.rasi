@@ -1,0 +1,9 @@
+
+configuration {
+location: 6;
+modi: "window,run,ssh,drun";
+xoffset: 0;
+yoffset: 0;
+}
+
+@theme "Monokai"
