@@ -6,7 +6,7 @@ depends = []
 [default.files]
 "config/bspwm/bspwmrc" = "~/.config/bspwm/bspwmrc"
 "config/sxhkd/sxhkdrc" = "~/.config/sxhkd/sxhkdrc"
-"config/polybar/config" = "~/.config/polybar/config"
+"config/polybar/config.ini" = "~/.config/polybar/config.ini"
 "config/fd/ignore" = "~/.config/fd/ignore"
 "config/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
 "config/rofi/config.rasi" = "~/.config/rofi/config.rasi"
