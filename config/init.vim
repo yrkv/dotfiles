@@ -2,8 +2,10 @@
 call plug#begin()
 Plug 'sickill/vim-monokai'
 Plug 'vim-airline/vim-airline'
-Plug 'sheerun/vim-polyglot'
+" TODO: vim-polyglot sets default to sh??????
+"Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
+Plug 'vimwiki/vimwiki'
 call plug#end()
 
 

@@ -1,6 +1,7 @@
 #!/bin/sh
 
-bspc monitor eDP-1 -d I II III IV V VI VII VIII IX X
+# auto-detect monitor; manual specification needed later if multimonitor
+bspc monitor -d I II III IV V VI VII VIII IX X
 
 
 bspc config split_ratio 0.5
@@ -32,9 +33,9 @@ sh $HOME/.fehbg
 setxkbmap -option caps:escape
 
 pgrep polybar > /dev/null || polybar -r top &
-#libinput-gestures -v > /tmp/libinput-gestures-log.txt & #TODO: sometimes crashes
+libinput-gestures -v > /tmp/libinput-gestures-log.txt & #TODO: sometimes crashes
 pgrep xbanish > /dev/null || xbanish &
-picom &
+pkill picom && picom || picom &
 
-#redshift -l 48:-122 &
+redshift -l 48:-122 &
 

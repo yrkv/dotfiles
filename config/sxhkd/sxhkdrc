@@ -3,7 +3,7 @@
 #   super -- base button to do wm related things
 #   alt -- alters/controls things
 #   shift -- stronger effect
-#   ctrl -- reversed effect
+#   ctrl -- additional arbitrary modifier
 #
 ###########################
 # bspwm and sxhkd controls
@@ -142,6 +142,15 @@ super + shift + {comma, period}
 XF86AudioMute
     pactl set-sink-mute @DEFAULT_SINK@ toggle; \
     dunstify -h int:value:$(pamixer --get-volume) -r 456 "Volume [$(pamixer --get-volume-human)]"
+
+
+{_,super+}{_,alt+}{_,shift+}{_,ctrl+} XF86AudioNext
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next; \
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play
+
+{_,super+}{_,alt+}{_,shift+}{_,ctrl+} XF86AudioPrev
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous; \
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play
 
 
 #####################

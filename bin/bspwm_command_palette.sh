@@ -9,6 +9,7 @@ function commands() {
     echo "tile focused           ## bspc node --state tiled"
     echo "swap desktops          ## swap-desktops | submenu"
     echo "select window geometry ## select-size | submenu"
+    echo "bluetooth              ## bluetooth-menu | submenu"
     echo "reset desktop names    ## bspc monitor eDP-1 -d I II III IV V VI VII VIII IX X"
     echo "reload sxhkdrc         ## pkill -USR1 -x sxhkd"
     echo "restart bspwm          ## bspc wm --restart"
@@ -17,10 +18,12 @@ function commands() {
     #echo "search files           ## search-util | file-actions | submenu"
     #echo "search files           ## search-util | file-actions | submenu"
     echo "search files           ## search-util"
+    echo "toggle redshift        ## pkill -USR1 redshift"
+    echo "restart polybar        ## pkill polybar; polybar -r top"
+    echo "restart xbanish        ## pkill xbanish; xbanish"
+    echo "map caps->escape       ## setxkbmap -option caps:escape"
 
     # Autoclicker
-    # Toggle redshift
-    #pkill -USR1 redshift
     # Remove receptacles
     #for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
 }
@@ -60,6 +63,18 @@ function select-size() {
     #echo "expand to 16:9 ##"
     #echo "shrink to 1:1 ##"
     #echo "expand to 1:1 ##"
+}
+
+function bluetooth-menu() {
+    echo " ## bluetoothctl power on"
+    echo " ## bluetoothctl connect 0C:8D:CA:5E:70:C9"
+    echo " ## bluetoothctl power off"
+    echo " ## bluetoothctl disconnect"
+    echo " ## galaxy-bat 0C:8D:CA:5E:70:C9"
+}
+
+function galaxy-bat() {
+    notify-send "$(galaxybuds-batterylevel $1)"
 }
 
 function search-util() {
