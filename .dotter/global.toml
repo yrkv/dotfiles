@@ -15,7 +15,7 @@ depends = []
 
 "config/fd/ignore" = "~/.config/fd/ignore"
 "config/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
-"config/init.vim" = "~/.config/nvim/init.vim"
+"config/nvim/" = "~/.config/nvim/"
 
 "bin/screenshot_util.sh" = "~/.local/bin/screenshot_util.sh"
 "bin/open_terminal_here.sh" = "~/.local/bin/open_terminal_here.sh"
