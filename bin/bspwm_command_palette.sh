@@ -66,11 +66,11 @@ function select-size() {
 }
 
 function bluetooth-menu() {
-    echo " ## bluetoothctl power on"
     echo " ## bluetoothctl connect 0C:8D:CA:5E:70:C9"
-    echo " ## bluetoothctl power off"
     echo " ## bluetoothctl disconnect"
     echo " ## galaxy-bat 0C:8D:CA:5E:70:C9"
+    echo " ## bluetoothctl power on"
+    echo " ## bluetoothctl power off"
 }
 
 function galaxy-bat() {
