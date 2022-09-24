@@ -168,10 +168,6 @@ super + t; {super +, }{shift +, } z
     tabc-simple -n embed focused \
     {open_terminal_here.sh, alacritty, alacritty}
 
-# TODO: scratchpad
-super + grave
-    notify-send TODO: scratchpad
-
 # application launcher
 #   `super + space`   : base keybind
 #   `super + t` chord : embed, super becomes optional
